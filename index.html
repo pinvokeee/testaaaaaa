@@ -1,0 +1,331 @@
+<html>
+
+<head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.9.3/dist/vuetify.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.9.3/dist/vuetify.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400,500,700" />
+
+    <script src="./test.js"></script>
+
+
+    </script>
+
+    <style>
+
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+        }
+
+        .app-main {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: 0.5fr 0.5fr;
+            gap: 4px;
+            padding: 16px;
+            padding-bottom: 0px;
+        }
+
+        .panes {
+            display: flex;
+            height: 100%;
+            width: calc(100% - 2px - 2px);
+            overflow: hidden;
+        }
+
+        .panel {
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 33.33%;
+            min-width: 10%;
+            padding: 10px;
+            box-sizing: border-box;
+            /* overflow: auto; */
+        }
+
+        .splitter {
+            width: 2px;
+            cursor: ew-resize;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .splitter:hover {
+            background-color: #888;
+        }
+
+        .v-list-item-title {
+            user-select: none;
+        }
+
+        .overflow-container {
+            overflow: auto;
+            height: 100%;
+        }
+
+        .question-text {
+            font-weight: bold;
+        }
+
+        .answer-text{
+            font-size: 80%;
+            white-space: pre-wrap;
+        }
+
+        .qa-item {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div id="app">
+        <v-app>
+            <v-theme-provider theme="system">
+                <v-main>
+                    <v-sheet>
+                    <div class="app-main">
+                            <div class="header">
+                                <v-text-field 
+                                v-model="keyword"
+                                label="検索キーワード" 
+                                density="comfortable" 
+                                center-affix 
+                                clearable
+                                variant="underlined"></v-text-field>
+                                <v-select density="comfortable" v-model="selectedSearchTargets" :items="searchTargets"
+                                    label="検索対象" multiple persistent-hint>
+
+                                    <template v-slot:selection="{ item, index }">
+                                        <v-chip v-if="selectedSearchTargets.length != searchTargets.length"
+                                            :text="item.title"></v-chip>
+                                        <v-chip
+                                            v-if="selectedSearchTargets.length == searchTargets.length && index == 0"
+                                            text="すべて"></v-chip>
+
+                                    </template>
+
+
+                                </v-select>
+                            </div>
+
+                            <div class="panes">
+                                <div class="panel">
+                                    
+                                        <v-treeview height="100%"
+                                        :items="categoryTree"
+                                        item-value="item.id"
+                                        item-title="item.text"
+                                        item-children="children"
+                                        density="compact"
+                                        selectable
+                                        select-strategy="independent"
+                                        open-on-click
+                                        v-model:selected="selectedCategories">
+                                        </v-treeview>
+
+                                </div>
+                                <div class="splitter"></div>
+                                <div class="panel">
+
+                                <v-virtual-scroll :items="faqItemList" height="100%">
+                                    <template v-slot:default="{ item, index }">
+                                      <div class="qa-item">
+                                        <div>{{item.number}}</div>
+                                        <div class="question-text">{{item.question}}</div>
+                                        <div class="answer-text">{{item.answer}}</div>
+                                      </div>
+                                      <v-divider></v-divider>
+                                    </template>
+                                  </v-virtual-scroll>
+                                
+
+                                </div>
+                                <div class="splitter"></div>
+                                <div class="panel">
+                                    {{keyword}}
+                                </div>
+                                <!-- <v-sheet>
+                                        {{ message }}
+                                    </v-sheet>
+    
+                                    <v-sheet>
+                                        {{ message }}
+                                    </v-sheet>
+    
+                                    <v-sheet>
+                                        {{ message }}
+                                    </v-sheet> -->
+
+                            </div>
+
+
+                    </div>
+                </v-sheet>
+                </v-main>
+            </v-theme-provider>
+        </v-app>
+    </div>
+
+
+    <!-- <template id="test-test">
+        dwada    
+    </template> -->
+
+
+    <script>
+
+        function generateFaqData(data) {
+            const tree = {};
+
+            const lv1Items = [];
+            const lv2Items = [];
+            const lv3Items = [];
+            
+            const faqItems = [];
+
+            for (const item of data) {
+
+                let lv1 = lv1Items.find(l => l.text == item.lv1);
+
+                if (lv1 == undefined) {
+                    lv1 = { id: crypto.randomUUID(), text: item.lv1, parentId: undefined };
+                    lv1Items.push(lv1);
+                }
+
+                let lv2 = lv2Items.find(l => l.text == item.lv2 && l.parentId == lv1.id);
+
+                if (lv2 == undefined) {
+                    lv2 = { id: crypto.randomUUID(), text: item.lv2, parentId: lv1.id };
+                    lv2Items.push(lv2);
+                }
+
+                let lv3 = lv3Items.find(l => l.text == item.lv3 && l.parentId == lv2.id);
+
+                if (lv3 == undefined) {
+                    lv3 = { id: crypto.randomUUID(), text: item.lv3, parentId: lv2.id };
+                    lv3Items.push(lv3);
+                }
+
+                faqItems.push({...item, lv1: lv1.id, lv2: lv2.id, lv3: lv3.id});
+            }
+
+            return {
+                categories: [...lv1Items, ...lv2Items, ...lv3Items],
+                faqItems,
+            }
+        }
+
+        const toCategoryTree = (categories) => {
+
+            const getFromParentId = (id) => {
+                return categories.filter(item => item.parentId == id).map(item => {
+
+                    const children = getFromParentId(item.id);
+
+                    return {
+                        item,
+                        children: children.length > 0 ? children : undefined,
+                    }
+                });
+            }
+
+            return categories.filter(item => item.parentId == undefined).map(item => ({ item, children: getFromParentId(item.id) }));
+        }
+
+        const matchTextArray = (textList, source) => {
+
+            for (const text of textList) {
+                if (source?.indexOf(text) == -1) return false;
+            }
+
+            return true;
+        }
+
+        const filterFaqItems = (keyword, faqItems, serachTargets) => {
+
+            const results = [];
+            const keywords = keyword ?? "".split(/\s/);
+
+            for (const item of faqItems) {
+
+                const isQuestion = serachTargets.includes("Question") && matchTextArray(keywords, item.question);
+                const isAnswer = serachTargets.includes("Answer") && matchTextArray(keywords, item.answer);
+
+                if (isQuestion || isAnswer) results.push(item);
+            }
+
+            return results;
+        }
+
+        const { createApp, ref, shallowRef, computed } = Vue
+        const { createVuetify } = Vuetify
+
+        const vuetify = createVuetify({
+            theme: {
+                defaultTheme: 'system',
+            },
+        });
+
+        createApp({
+
+            setup() {
+
+                const message = ref('Hello vue!');
+
+                const faqObject = __faqObject;
+
+                const keyword = ref("");
+                const searchTargets = ["区分1", "区分2", "区分3", "Question", "Answer", "メモ欄"];
+                const selectedSearchTargets = shallowRef([...searchTargets]);
+
+                const { faqItems, categories } = generateFaqData(faqObject);
+
+                const categoryTree = ref(toCategoryTree(categories));
+                const selectedCategories = ref(categories.map(item => item.id));
+
+                const faqItemList = computed(() => filterFaqItems(keyword.value, faqItems, selectedSearchTargets.value));
+
+
+                console.log(categories);
+
+                return {
+                    message,
+                    keyword,
+                    faqItems,
+                    faqItemList,
+                    categoryTree,
+                    selectedCategories,
+                    searchTargets,
+                    selectedSearchTargets,
+                }
+            },
+
+        }).use(vuetify).mount('#app');
+
+        mountSplitters(".panes");
+
+
+    </script>
+
+</body>
+
+</html>
