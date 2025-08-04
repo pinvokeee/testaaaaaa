@@ -31,7 +31,6 @@ const __faqObject = [
         answer: "回答3",
         memo: "備考あり"
     },
-
     {
         id: "test5",
         lv1: "lv1-b",
