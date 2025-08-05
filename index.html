@@ -5,7 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@3.9.3/dist/vuetify.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.9.3/dist/vuetify.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" />
-    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400,500,700" />
+    <!-- <link rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400,500,700" /> -->
 
     <script src="./test.js"></script>
 
@@ -13,8 +13,8 @@
     </script>
 
     <style>
-
-        html, body {
+        html,
+        body {
             width: 100vw;
             height: 100vh;
             overflow: hidden;
@@ -26,10 +26,17 @@
         }
 
         .app-main {
+            /* display: grid;
+            grid-template-columns: auto 1fr; */
+            width: 100%;
+            height: 100vh;
+        }
+
+        .faq-view-content {
             display: grid;
             grid-template-rows: auto 1fr;
             width: 100%;
-            height: 100vh;
+            height: 100%;
         }
 
         .header {
@@ -61,6 +68,12 @@
             flex-basis: 30%;
         }
 
+        .split-head {
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            height: 100%;
+        }
+
         .panel.second {
             flex-basis: 70%;
         }
@@ -70,6 +83,7 @@
             cursor: ew-resize;
             user-select: none;
             flex-shrink: 0;
+            background-color: #cfcfcf;
         }
 
         .splitter:hover {
@@ -88,12 +102,12 @@
         .question-text {
             padding-top: 10px;
             padding-bottom: 10px;
-            
+
             /* padding: 10px; */
             font-weight: bold;
         }
 
-        .answer-text{
+        .answer-text {
             /* font-size: 80%; */
             white-space: pre-wrap;
             width: 100%;
@@ -107,6 +121,8 @@
             padding-bottom: 10px;
             display: grid;
             grid-template-rows: auto 1fr;
+
+            gap: 8px;
         }
 
         .qa-item-head {
@@ -118,6 +134,28 @@
             margin-left: auto;
         }
 
+        .qa-item-memo-border {
+            border: gray solid 1px;
+        }
+
+        .qa-item-memo-title {
+            /* font-size: 80%; */
+            padding: 10px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            border-bottom: gray solid 1px;
+        }
+
+        .qa-item-memo-content {
+            padding: 10px;
+        }
+
+        .content-highlight {
+            border-radius: 4px;
+            color: rgba(var(--v-theme-surface), 1);
+            background-color: rgba(var(--v-theme-info), 1);
+        }
+
     </style>
 </head>
 
@@ -127,95 +165,144 @@
     <div id="app">
         <v-app>
             <v-theme-provider theme="system">
-                <v-main>
-                    <v-sheet>
-                    <div class="app-main">
-                            <div class="header">
-                                <v-text-field v-model="keyword" label="検索キーワード" density="comfortable" center-affix clearable variant="underlined" @update:focused="updateFocused"></v-text-field>
-                                <v-select density="comfortable" v-model="selectedSearchTargets" :items="searchTargets" label="検索対象" multiple persistent-hint>
-                                    <template v-slot:selection="{ item, index }">
-                                        <v-chip v-if="selectedSearchTargets.length != searchTargets.length" :text="item.title"></v-chip>
-                                        <v-chip v-if="selectedSearchTargets.length == searchTargets.length && index == 0" text="すべて"></v-chip>
-                                    </template>
-                                </v-select>
-                            </div>
 
-                            <div class="panes">
-                                <div class="panel first">
-                                    
-                                    <v-treeview height="100%"
-                                        filterable
-                                        :items="categoryTree"
-                                        :selected="selectedCategories"
-                                        item-value="item.id"
-                                        item-title="item.text"
-                                        item-children="children"
-                                        density="compact"
-                                        selectable
-                                        select-strategy="independent"
-                                        open-on-click
-                                        :search="categoryFilter"
-                                        :custom-filter="treeFilter"
-                                        @update:selected="updateCategorySelected">
+                <v-card>
+                    <v-layout>
+                        <v-navigation-drawer expand-on-hover permanent rail>
 
-                                    </v-treeview>
+                            <v-list density="compact" nav>
+                                <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
+                                <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me"
+                                    value="shared"></v-list-item>
+                                <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+                            </v-list>
+                        </v-navigation-drawer>
 
-                                </div>
-                                <div class="splitter"></div>
-                                <div class="panel second">
+                        <v-main>
+                            <v-sheet>
+                                <div class="app-main">
 
-                                <v-virtual-scroll :items="filterItems.faqItems" height="100%">
-                                    <template v-slot:default="{ item, index }">
-                                      <div class="qa-item">
+                                    <div class="faq-view-content">
+                                        <div class="header">
+                                            <v-text-field v-model="keyword" label="検索キーワード" density="comfortable"
+                                                center-affix clearable variant="underlined"
+                                                @update:focused="updateFocused"></v-text-field>
+                                            <v-select density="comfortable" v-model="selectedSearchTargets"
+                                                :items="searchTargets" label="検索対象" multiple persistent-hint>
+                                                <template v-slot:selection="{ item, index }">
+                                                    <v-chip v-if="selectedSearchTargets.length != searchTargets.length"
+                                                        :text="item.title"></v-chip>
+                                                    <v-chip
+                                                        v-if="selectedSearchTargets.length == searchTargets.length && index == 0"
+                                                        text="すべて"></v-chip>
+                                                </template>
+                                            </v-select>
+                                        </div>
 
-                                        <div class="qa-item-head">
-                                            <div>{{item.number}}</div>
-                                            <div class="category">
-                                                <span>{{ categoryNames[item.lv1] }} - {{ categoryNames[item.lv2] }} - {{ categoryNames[item.lv3] }}</span>
+                                        <div class="panes">
+                                            <div class="panel first split-head">
+
+                                                <div>
+                                                    <v-btn variant="text" size="small" @click="allNodesSelect">選択</v-btn>
+                                                    <v-btn variant="text" size="small" @click="allNodesDeselect">解除</v-btn>
+                                                    <v-btn variant="text" size="small" @click="allNodesOpen">展開</v-btn>
+                                                    <v-btn variant="text" size="small" @click="allNodesClose">折りたたむ</v-btn>
+                                                </div>
+
+                                                <v-divider></v-divider>
+
+                                                <v-treeview height="100%" filterable :items="categoryTree"
+                                                    :selected="selectedCategories" item-value="item.id"
+                                                    item-title="item.text" item-children="children" density="compact"
+                                                    selectable select-strategy="independent" open-on-click v-model:opened="openedNodes"
+                                                    :search="categoryFilter" 
+                                                    :custom-filter="treeFilter"
+                                                    @update:selected="updateCategorySelected">
+
+                                                </v-treeview>
+
                                             </div>
+                                            <div class="splitter"></div>
+                                            <div class="panel second">
+
+                                                <v-virtual-scroll :items="filterItems.faqItems" height="100%">
+                                                    <template v-slot:default="{ item, index }">
+                                                        <div class="qa-item">
+                                                            <div>
+                                                                <div class="qa-item-head">
+
+                                                                    <div>{{item.number}}</div>
+                                                                    <div class="category">
+                                                                        <span>{{ categoryNames[item.lv1] }} - {{
+                                                                            categoryNames[item.lv2] }} - {{
+                                                                            categoryNames[item.lv3] }}</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div>
+                                                                    <div class="question-text">
+                                                                        <template v-if="filterItems.highlightDataItems[index]?.question">
+                                                                            <template v-for="el in filterItems.highlightDataItems[index]?.question">
+                                                                                <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
+                                                                                <span v-if="!el.isHighlightTarget">{{el.text}}</span>
+                                                                            </template>
+                                                                        </template>
+                                                                        <template v-if="!(filterItems.highlightDataItems[index]?.question)">{{item.question}}</template>
+                                                                    </div>
+
+                                                                    <div v-if="item.answer && item.answer.length > 0"
+                                                                        readonly class="answer-text" draggable="false"
+                                                                        contenteditable v-on:dragover="onInput"
+                                                                        v-on:drop="onInput" v-on:keypress="onInput"
+                                                                        v-on:paste="onInput" v-on:cut="onInput">
+                                                                    
+                                                                        <template v-if="filterItems.highlightDataItems[index]?.answer">
+                                                                            <template v-for="el in filterItems.highlightDataItems[index]?.answer">
+                                                                                <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
+                                                                                <span v-if="!el.isHighlightTarget">{{el.text}}</span>
+                                                                            </template>
+                                                                        </template>
+                                                                        <template v-if="!(filterItems.highlightDataItems[index]?.answer)">{{item.answer}}</template>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div v-if="item.memo && item.memo.length > 0"
+                                                                class="qa-item-memo-border">
+                                                                <div class="qa-item-memo-title">メモ欄</div>
+                                                                <div class="qa-item-memo-content">
+                                                                    <template v-if="filterItems.highlightDataItems[index]?.memo">
+                                                                        <template v-for="el in filterItems.highlightDataItems[index]?.memo">
+                                                                            <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
+                                                                            <span v-if="!el.isHighlightTarget">{{el.text}}</span>
+                                                                        </template>
+                                                                    </template>
+                                                                    <template v-if="!(filterItems.highlightDataItems[index]?.memo)">{{item.memo}}</template>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <v-divider></v-divider>
+                                                    </template>
+                                                </v-virtual-scroll>
+
+
+                                            </div>
+
                                         </div>
-
-                                        <div>
-                                           
-                                            <div class="question-text">{{item.question}}</div>
-                                            <textarea readonly class="answer-text" :value="item.answer"></textarea>
-
-                                            <!-- <div class="answer-text">{{item.answer}}</div> -->
-                                        </div>
-
-
-                                        <!-- <v-breadcrumbs :items="[categoryNames[item.lv1], categoryNames[item.lv2], categoryNames[item.lv3]]"></v-breadcrumbs> -->
-                                       
-
-                                      </div>
-                                      <v-divider></v-divider>
-                                    </template>
-                                  </v-virtual-scroll>
-                                
+                                    </div>
 
                                 </div>
-                                <!-- <div class="splitter"></div>
-                                <div class="panel">
-                                    {{categoryFilter}}
-                                </div> -->
-                                <!-- <v-sheet>
-                                        {{ message }}
-                                    </v-sheet>
-    
-                                    <v-sheet>
-                                        {{ message }}
-                                    </v-sheet>
-    
-                                    <v-sheet>
-                                        {{ message }}
-                                    </v-sheet> -->
-
-                            </div>
+                            </v-sheet>
+                        </v-main>
 
 
-                    </div>
-                </v-sheet>
-                </v-main>
+                    </v-layout>
+                </v-card>
+
+
             </v-theme-provider>
         </v-app>
     </div>
@@ -228,7 +315,7 @@
             const lv1Items = [];
             const lv2Items = [];
             const lv3Items = [];
-            
+
             const faqItems = [];
             const categoryNames = {};
 
@@ -258,7 +345,7 @@
                     lv3Items.push(lv3);
                 }
 
-                faqItems.push({...item, lv1: lv1.id, lv2: lv2.id, lv3: lv3.id});
+                faqItems.push({ ...item, lv1: lv1.id, lv2: lv2.id, lv3: lv3.id });
             }
 
             return {
@@ -283,47 +370,173 @@
             }
 
             return categories
-            .filter(item => item.parentId == undefined)
-            .map(item => ({ item, children: getFromParentId(item.id) }));
+                .filter(item => item.parentId == undefined)
+                .map(item => ({ item, children: getFromParentId(item.id) }));
         }
 
         const matchTextArray = (textList, source) => {
 
+            // const mode = 
+
             for (const text of textList) {
-                if (source?.indexOf(text) == -1) return false;
+
+                if (source?.indexOf(text) > -1) return true;
+                if (source?.indexOf(text.toUpperCase()) > -1) return true;
+                if (source?.indexOf(text.toLowerCase()) > -1) return true;
+
+                // if (source?.indexOf(text) == -1 && source?.indexOf(text.toUpperCase()) == -1 && source?.indexOf(text.toLowerCase()) == -1) {
+                //     return false;
+                // }
             }
 
-            return true;
+            return false;
+            // return true;
         }
 
-        const filterFaqItems = (keyword, items, serachTargets, selectedCategories) => {
+        //文字列を分割して区切り文字を含んだ配列を返す
+        const split2 = (text, delimiter) => {
+            const result = [];
+
+            let pre = 0;
+            let index = text.indexOf(delimiter);
+
+            while (index > -1) {
+
+                if (pre + index > 0) {
+                    result.push(text.substring(pre, index));
+                }
+
+                result.push(delimiter);
+
+                pre = index + delimiter.length;
+                index = text.indexOf(delimiter, index + delimiter.length);
+            }
+
+            if (pre < text.length) {
+                result.push(text.substring(pre, text.length));
+            }
+
+            return result;
+        }
+
+        // ^https?://[\w.?=&#%~/-]+$
+
+        const getHighlightTextStructureRegex = (keywords, source) => {
+
+            if (!source) return undefined;
+
+            const a = split(source, keywords[0]).map(text => ({ isHighlightTarget: keywords[0] == text, text }));
+
+            // if (keywords.length == 1) return a;
+
+            for (let i = 1; i < keywords.length; i++) {
+
+                const keyword = keywords[i];
+
+                for (let k = 0; k < a.length; k++) {
+
+                    const current = a[k].text;
+
+                    // console.log(current, keyword, source);
+
+                    if (current.indexOf(keyword) > -1) {
+                        const aa = split(current, keyword).map(text => ({ isHighlightTarget: keyword == text, text }));
+                        a.splice(k, 1);
+                        a.splice(k, 0, ...aa);
+                        k += aa.length;
+                    }
+                }
+            }
+
+            return a;
+        }
+
+        const getHighlightTextStructure = (keywords, source) => {
+
+            if (!source) return undefined;
+
+            const a = split2(source, keywords[0]).map(text => ({ isHighlightTarget: keywords[0] == text, text }));
+
+            // if (keywords.length == 1) return a;
+
+            for (let i = 1; i < keywords.length; i++) {
+
+                const keyword = keywords[i];
+
+                for (let k = 0; k < a.length; k++) {
+
+                    const current = a[k].text;
+
+                    // console.log(current, keyword, source);
+
+                    if (current.indexOf(keyword) > -1) {
+                        const aa = split2(current, keyword).map(text => ({ isHighlightTarget: keyword == text, text }));
+                        a.splice(k, 1);
+                        a.splice(k, 0, ...aa);
+                        k += aa.length;
+                    }
+                }
+            }
+
+            return a;
+        }
+
+        const highlightKeywords = (keywords, item) => {
+
+            return {
+                question: getHighlightTextStructure(keywords, item.question),
+                answer: getHighlightTextStructure(keywords, item.answer),
+                memo: getHighlightTextStructure(keywords, item.memo),
+            }
+        }
+
+        const filterFaqItems = (keyword, items, serachTargets, selectedCategories, categoryNames) => {
 
             const faqItems = [];
-            const keywords = (keyword ?? "").split(/\s/);
+            const highlightDataItems = [];
+            const keywords = ((keyword ?? "").split(/\s/).filter(k => k.length > 0)) ?? [];
             const filterCategories = [];
 
             for (const item of items) {
 
-                const isQuestion = serachTargets.includes("Question") && matchTextArray(keywords, item.question);
-                const isAnswer = serachTargets.includes("Answer") && matchTextArray(keywords, item.answer);
+                const matched = {
+                    isQuestion: serachTargets.includes("Question") && matchTextArray(keywords, item.question ?? ""),
+                    isAnswer: serachTargets.includes("Answer") && matchTextArray(keywords, item.answer ?? ""),
+                    isNumber: serachTargets.includes("通し番号") && matchTextArray(keywords, item.number ?? ""),
+                    isLv1: serachTargets.includes("区分1") && matchTextArray(keywords, categoryNames[item.lv1]),
+                    isLv2: serachTargets.includes("区分2") && matchTextArray(keywords, categoryNames[item.lv2]),
+                    isLv3: serachTargets.includes("区分3") && matchTextArray(keywords, categoryNames[item.lv3]),
+                    isMemo: serachTargets.includes("メモ欄") && matchTextArray(keywords, item.memo ?? ""),
+                }
 
-                if (isQuestion || isAnswer) {
-                    
-                    if (
-                        selectedCategories.includes(item.lv1) &&
-                        selectedCategories.includes(item.lv2) &&
-                        selectedCategories.includes(item.lv3)) faqItems.push(item);
+                const isMatched = Object.values(matched).find(m => m) || keywords.length == 0;
 
-                    // if (!filterCategories.includes(item.lv1)) filterCategories.push(item.lv1);
-                    // if (!filterCategories.includes(item.lv2)) filterCategories.push(item.lv2);
+                if (isMatched) {
+
+                    const selectedLv1 = selectedCategories.includes(item.lv1);
+                    const selectedLv2 = selectedCategories.includes(item.lv2);
+                    const selectedLv3 = selectedCategories.includes(item.lv3);
+
+                    // console.log(matched, isMatched, selectedLv1, selectedLv2, selectedLv3);
+
+                    if (selectedLv1 && selectedLv2 && selectedLv3) {
+
+                        faqItems.push(item);
+
+                        if (keyword) {
+                            const h = highlightKeywords(keywords, item);
+                            highlightDataItems.push(h);
+                        }
+                    }
+
                     if (!filterCategories.includes(item.lv3)) filterCategories.push(item.lv3);
                 }
             }
 
-            return { faqItems, categories: filterCategories };
+            return { faqItems, highlightDataItems, categories: filterCategories };
         }
 
-        
+
         const getChildren = (c, id) => {
             const items = c.filter(item => item.parentId == id);
             const results = [];
@@ -335,7 +548,11 @@
 
             return results;
         }
-  
+
+        const onInput = (e) => {
+            e.preventDefault();
+        }
+
         const { createApp, ref, shallowRef, computed } = Vue
         const { createVuetify } = Vuetify
 
@@ -349,32 +566,40 @@
 
             setup() {
 
-                const message = ref('Hello vue!');
-
                 const faqObject = __faqObject;
+                const { faqItems, categories, categoryNames } = generateFaqData(faqObject);
 
                 const keyword = ref("");
                 const categoryFilter = ref("");
 
-                const searchTargets = ["区分1", "区分2", "区分3", "Question", "Answer", "メモ欄"];
+                const searchTargets = ["区分1", "区分2", "区分3", "通し番号", "Question", "Answer", "メモ欄"];
                 const selectedSearchTargets = shallowRef([...searchTargets]);
-
-                const { faqItems, categories, categoryNames } = generateFaqData(faqObject);
-
                 const selectedCategories = shallowRef(categories.map(item => item.id));
 
-                const filterItems = computed(() => filterFaqItems(keyword.value, faqItems, selectedSearchTargets.value, selectedCategories.value));
+                const filterItems = computed(() => filterFaqItems(keyword.value, faqItems, selectedSearchTargets.value, selectedCategories.value, categoryNames));
                 const filterCategories = shallowRef([]);
 
+                const openedNodes = shallowRef([]);
                 const categoryTree = ref(toCategoryTree(categories, filterItems.value.categories));
 
                 const treeFilter = (value, search, item) => {
-
-                    if (filterCategories.value.includes(item.value)) {
-                        console.log(filterCategories.value, item.value, item.title);  
-                    }
-
                     return filterCategories.value.includes(item.value);
+                }
+
+                const allNodesOpen = () => {
+                    openedNodes.value = [...categories.map(item => item.id)];
+                }
+
+                const allNodesClose = () => {
+                    openedNodes.value = [];
+                }
+
+                const allNodesSelect = () => {
+                    selectedCategories.value = [...categories.map(item => item.id)];
+                }
+
+                const allNodesDeselect = () => {
+                    selectedCategories.value = [];                    
                 }
 
                 const updateFocused = (state) => {
@@ -385,17 +610,17 @@
                 }
 
                 const updateCategorySelected = (value, item) => {
-                    
+
                     let selected = [...value];
 
                     const a = selectedCategories.value.length < value.length ? selectedCategories.value : value;
                     const b = selectedCategories.value.length < value.length ? value : selectedCategories.value;
-                    
+
                     let state;
 
                     for (const item of b) {
                         if (!a.includes(item)) {
-                            const isChecked = value.includes(item);    
+                            const isChecked = value.includes(item);
                             state = { id: item, isChecked };
                             break;
                         }
@@ -407,20 +632,26 @@
 
                         if (state.isChecked) {
                             selected.push(...children);
-                        }else {
+                        } else {
                             selected = selected.filter(id => !children.includes(id));
                         }
                     }
 
-                    selectedCategories.value = selected;        
+                    selectedCategories.value = selected;
                 }
-  
+
 
                 return {
-                    message,
                     keyword,
                     faqItems,
                     filterItems,
+
+                    openedNodes,
+                    allNodesOpen,
+                    allNodesClose,
+                    allNodesSelect,
+                    allNodesDeselect,
+
                     categoryTree,
                     selectedCategories,
                     searchTargets,
@@ -433,6 +664,8 @@
                     treeFilter,
 
                     categoryNames,
+
+                    onInput,
                 }
             },
 
