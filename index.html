@@ -39,6 +39,17 @@
             height: 100%;
         }
 
+        .iframe-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         .header {
             display: grid;
             grid-template-columns: 0.5fr 0.5fr;
@@ -149,6 +160,7 @@
 
         .qa-item-memo-content {
             padding: 10px;
+            overflow-wrap: anywhere;
         }
 
         .content-highlight {
@@ -171,19 +183,27 @@
                     <v-layout>
                         <v-navigation-drawer expand-on-hover permanent rail>
 
-                            <v-list density="compact" nav>
-                                <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
-                                <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me"
-                                    value="shared"></v-list-item>
-                                <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+                            <v-list density="compact" nav @click:select="handleClickPage">
+
+                                <template v-for="page in pageList">
+                                    <v-list-item prepend-icon="mdi-folder" :title="page.name" :value="page.id"></v-list-item>
+                                </template>
+
+                                <!-- <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item> -->
+                                <!-- <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item> -->
                             </v-list>
+
                         </v-navigation-drawer>
 
                         <v-main>
                             <v-sheet>
                                 <div class="app-main">
 
-                                    <div class="faq-view-content">
+                                    <div class="iframe-wrapper" v-if="currentPageId != 'faq'">
+                                        <iframe class="frame" :src="currentPage.url"></iframe>
+                                    </div>
+
+                                    <div class="faq-view-content" v-show="currentPageId == `faq`">
                                         <div class="header">
                                             <v-text-field v-model="keyword" label="検索キーワード" density="comfortable"
                                                 center-affix clearable variant="underlined"
@@ -274,15 +294,38 @@
                                                                 class="qa-item-memo-border">
                                                                 <div class="qa-item-memo-title">メモ欄</div>
                                                                 <div class="qa-item-memo-content">
+
                                                                     <template v-if="filterItems.highlightDataItems[index]?.memo">
+
                                                                         <template v-for="el in filterItems.highlightDataItems[index]?.memo">
-                                                                            <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
-                                                                            <span v-if="!el.isHighlightTarget">{{el.text}}</span>
+                                                                            
+                                                                            <template v-if="el.link">
+                                                                                <a :href="el.url" target=”_blank”>
+                                                                                    <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
+                                                                                    <span v-if="!el.isHighlightTarget">{{el.text}}</span>    
+                                                                                </a>                                                                                
+                                                                            </template>
+
+                                                                            <template v-if="!el.link">
+                                                                                <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
+                                                                                <span v-if="!el.isHighlightTarget">{{el.text}}</span>    
+                                                                            </template>
+
                                                                         </template>
                                                                     </template>
+
                                                                     <template v-if="!(filterItems.highlightDataItems[index]?.memo)">{{item.memo}}</template>
+                                                                    
                                                                 </div>
                                                             </div>
+
+                                                            <!-- <div v-if="item.memo && item.memo.length > 0"
+                                                                class="qa-item-memo-border">
+                                                                <div class="qa-item-memo-title">メモ欄</div>
+                                                                <div class="qa-item-memo-content">
+                                                                    <div v-html="filterItems.highlightDataItems[index]?.memo"></div>
+                                                                </div>
+                                                            </div> -->
 
                                                         </div>
                                                         <v-divider></v-divider>
@@ -404,23 +447,21 @@
             while (index > -1) {
 
                 if (pre + index > 0) {
-                    result.push(text.substring(pre, index));
+                    result.push({ index: pre, text: text.substring(pre, index) });
                 }
 
-                result.push(delimiter);
+                result.push({ index, text: delimiter });
 
                 pre = index + delimiter.length;
                 index = text.indexOf(delimiter, index + delimiter.length);
             }
 
             if (pre < text.length) {
-                result.push(text.substring(pre, text.length));
+                result.push({ index: pre, text: text.substring(pre, text.length) });
             }
 
             return result;
         }
-
-        // ^https?://[\w.?=&#%~/-]+$
 
         const getHighlightTextStructureRegex = (keywords, source) => {
 
@@ -452,35 +493,119 @@
             return a;
         }
 
+        const getHighlightTextStructure2 = (source) => {
+
+            const urlRegexes = [...source.matchAll(/https?:\/\/[^\s"']+/g)];
+            const a = [];
+            
+            let last = 0;
+            let obj = {};
+
+            for (const reg of urlRegexes) {
+
+                const { index } = reg;
+                const value = reg[0];
+
+                if (index > last) {
+                    obj = { text: source.substring(last, index), index: last, link: false }
+                    a.push({...obj});
+                }
+
+                last = index + value.length;
+
+                obj = { text: source.substring(index, last), index, link: true, url: value, startLink: true, endLink: true };
+                a.push({...obj});
+
+                console.log(value);
+            }
+
+            if (last < source.length) {
+                obj = { text: source.substring(last, source.length), index: last, link: false };
+                a.push({...obj});
+            }
+
+            console.log(a);
+
+            return a;
+        }
+
         const getHighlightTextStructure = (keywords, source) => {
 
             if (!source) return undefined;
 
-            const a = split2(source, keywords[0]).map(text => ({ isHighlightTarget: keywords[0] == text, text }));
+            const a = getHighlightTextStructure2(source);
+
+            // const a = split2(source, keywords[0]).map(({ index, text }) => ({ index, isHighlightTarget: keywords[0] == text, text }));
 
             // if (keywords.length == 1) return a;
 
-            for (let i = 1; i < keywords.length; i++) {
+            for (let i = 0; i < keywords.length; i++) {
 
                 const keyword = keywords[i];
+
+                let isLink = false;
+                let startLink = false;
 
                 for (let k = 0; k < a.length; k++) {
 
                     const current = a[k].text;
 
+                    isLink = a[k].link;
+                    startLink = a[k].startLink;
+
                     // console.log(current, keyword, source);
 
                     if (current.indexOf(keyword) > -1) {
-                        const aa = split2(current, keyword).map(text => ({ isHighlightTarget: keyword == text, text }));
+                        const aa = split2(current, keyword).map(({ index, text }) => 
+                        ({ index, isHighlightTarget: keyword == text, text, link: a[k].link, url: a[k].url ?? undefined }));
                         a.splice(k, 1);
                         a.splice(k, 0, ...aa);
                         k += aa.length;
+
+                        for (let i = 0; i < a.length; i++) {
+                            a[i].startLink = (i > 0) && !(a[i - 1]?.link);
+                            a[i].endLink = (i < a.length - 1) && !(a[i + 1]?.link);
+                        }
                     }
                 }
             }
 
+            console.log(a);
+
             return a;
         }
+
+        // const escapeRegExp = (string) => {
+        //     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // };
+
+        // const escapeHTML = (string) => {
+        //     return string
+        //         .replace(/&/g, "&amp;")
+        //         .replace(/</g, "&lt;")
+        //         .replace(/>/g, "&gt;")
+        //         .replace(/"/g, "&quot;")
+        //         .replace(/'/g, "&#039;");
+        // };
+
+        // const getHighlightTextStructure = (keywords, source) => {
+
+        //     const escapedSource = escapeHTML(source ?? "");
+
+        //     let html = `<div>${escapedSource}</div>`;
+
+        //     for (const keyword of keywords) {
+                
+        //         const safeKeyword = escapeRegExp(keyword);
+
+        //         html = html.replace(
+        //             new RegExp(`(${safeKeyword})`, "gi"),
+        //             "<span class=\"content-highlight\">$1</span>"
+        //         );
+        //     }
+
+        //     return html;
+        // };
 
         const highlightKeywords = (keywords, item) => {
 
@@ -524,10 +649,12 @@
 
                         faqItems.push(item);
 
-                        if (keyword) {
+                        // if (keyword) {
                             const h = highlightKeywords(keywords, item);
                             highlightDataItems.push(h);
-                        }
+                        // }
+
+                        console.log(keyword);
                     }
 
                     if (!filterCategories.includes(item.lv3)) filterCategories.push(item.lv3);
@@ -569,6 +696,14 @@
 
                 const faqObject = __faqObject;
                 const { faqItems, categories, categoryNames } = generateFaqData(faqObject);
+
+                const pageList = [
+                    { id: "faq", name: "FAQ", url: "faq" },
+                    { id: crypto.randomUUID(), name: "test", url: "https://www.google.co.jp" },
+                ];
+
+                const currentPageId = ref(pageList[0].id);
+                const currentPage = computed(() => pageList.find(item => item.id == currentPageId.value));
 
                 const keyword = ref("");
                 const categoryFilter = ref("");
@@ -641,6 +776,18 @@
                     selectedCategories.value = selected;
                 }
 
+                const handleClickPage = (e) => {
+
+                    const page = pageList.find(item => item.id == e.id);
+
+                    if (page) {
+                        currentPageId.value = page.id;
+                        console.log(currentPageId);
+
+                        
+                    }
+                    console.log(e);
+                }
 
                 return {
                     keyword,
@@ -667,11 +814,17 @@
                     categoryNames,
 
                     onInput,
+
+                    currentPage,
+                    currentPageId,
+                    pageList, 
+                    handleClickPage,
                 }
             },
 
         }).use(vuetify).mount('#app');
 
+        
         mountSplitters(".panes");
 
 
