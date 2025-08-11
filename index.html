@@ -7,7 +7,476 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" />
     <!-- <link rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400,500,700" /> -->
 
-    <script src="./test.js"></script>
+    <script>
+        const __faqObject = [
+            {
+                id: "test1",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM001",
+                question: "質問1",
+                answer: "回答1",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test2",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM002",
+                question: "質問2",
+                answer: "回答2",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test3",
+                lv1: "lv1-a",
+                lv2: "lv2-b",
+                lv3: "lv3-b",
+                number: "NUM003",
+                question: "質問3",
+                answer: "回答3",
+                memo: "備考あり"
+            },
+
+            {
+                id: "test5",
+                lv1: "lv1-b",
+                lv2: "lv2-d",
+                lv3: "lv3-c",
+                number: "NUM005",
+                question: "質問5",
+                answer: "回答5",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test6",
+                lv1: "lv1-a",
+                lv2: "lv2-b",
+                lv3: "lv3-b",
+                number: "NUM006",
+                question: "質問6",
+                answer: "回答6",
+                memo: "確認済み"
+            },
+            {
+                id: "test7",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM007",
+                question: "質問7",
+                answer: "回答7",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test8",
+                lv1: "lv1-b",
+                lv2: "lv2-b",
+                lv3: "lv3-c",
+                number: "NUM008",
+                question: "質問8",
+                answer: "回答8",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test9",
+                lv1: "lv1-c",
+                lv2: "lv2-e",
+                lv3: "lv3-d",
+                number: "NUM009",
+                question: "質問9",
+                answer: "回答9",
+                memo: "重要"
+            },
+            {
+                id: "test10",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM010",
+                question: "質問10",
+                answer: "回答10",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test11",
+                lv1: "lv1-b",
+                lv2: "lv2-c",
+                lv3: "lv3-b",
+                number: "NUM011",
+                question: "質問11",
+                answer: "回答11",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test12",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM012",
+                question: "質問12",
+                answer: "回答12",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test13",
+                lv1: "lv1-c",
+                lv2: "lv2-e",
+                lv3: "lv3-d",
+                number: "NUM013",
+                question: "質問13",
+                answer: "回答13",
+                memo: "参考情報あり"
+            },
+            {
+                id: "test14",
+                lv1: "lv1-b",
+                lv2: "lv2-d",
+                lv3: "lv3-c",
+                number: "NUM014",
+                question: "質問14",
+                answer: "回答14",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test15",
+                lv1: "lv1-a",
+                lv2: "lv2-b",
+                lv3: "lv3-a",
+                number: "NUM015",
+                question: "質問15",
+                answer: "回答15",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test16",
+                lv1: "lv1-b",
+                lv2: "lv2-c",
+                lv3: "lv3-b",
+                number: "NUM016",
+                question: "質問16",
+                answer: "回答16",
+                memo: "対応済み"
+            },
+            {
+                id: "test17",
+                lv1: "lv1-c",
+                lv2: "lv2-f",
+                lv3: "lv3-d",
+                number: "NUM017",
+                question: "質問17",
+                answer: "回答17",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test18",
+                lv1: "lv1-a",
+                lv2: "lv2-b",
+                lv3: "lv3-b",
+                number: "NUM018",
+                question: "質問18",
+                answer: "回答18",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test19",
+                lv1: "lv1-c",
+                lv2: "lv2-e",
+                lv3: "lv3-d",
+                number: "NUM019",
+                question: "質問19",
+                answer: "回答19",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test20",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM020",
+                question: "質問20",
+                answer: "回答20",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test21",
+                lv1: "lv1-b",
+                lv2: "lv2-c",
+                lv3: "lv3-c",
+                number: "NUM021",
+                question: "質問21",
+                answer: "回答21",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test22",
+                lv1: "lv1-c",
+                lv2: "lv2-d",
+                lv3: "lv3-d",
+                number: "NUM022",
+                question: "質問22",
+                answer: "回答22",
+                memo: "確認中"
+            },
+            {
+                id: "test23",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM023",
+                question: "質問23",
+                answer: "回答23",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test24",
+                lv1: "lv1-b",
+                lv2: "lv2-b",
+                lv3: "lv3-b",
+                number: "NUM024",
+                question: "質問24",
+                answer: "回答24",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test25",
+                lv1: "lv1-c",
+                lv2: "lv2-e",
+                lv3: "lv3-c",
+                number: "NUM025",
+                question: "質問25",
+                answer: "回答25",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test26",
+                lv1: "lv1-b",
+                lv2: "lv2-b",
+                lv3: "lv3-c",
+                number: "NUM026",
+                question: "質問26",
+                answer: "回答26",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test27",
+                lv1: "lv1-a",
+                lv2: "lv2-b",
+                lv3: "lv3-b",
+                number: "NUM027",
+                question: "質問27",
+                answer: "回答27",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test28",
+                lv1: "lv1-c",
+                lv2: "lv2-d",
+                lv3: "lv3-d",
+                number: "NUM028",
+                question: "質問28",
+                answer: "回答28",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test29",
+                lv1: "lv1-b",
+                lv2: "lv2-c",
+                lv3: "lv3-b",
+                number: "NUM029",
+                question: "質問29",
+                answer: "回答29",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test30",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM030",
+                question: "質問30",
+                answer: "回答30",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test31",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-b",
+                number: "NUM031",
+                question: "質問31",
+                answer: "回答31",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test32",
+                lv1: "lv1-b",
+                lv2: "lv2-c",
+                lv3: "lv3-a",
+                number: "NUM032",
+                question: "質問32",
+                answer: "回答32",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test33",
+                lv1: "lv1-c",
+                lv2: "lv2-e",
+                lv3: "lv3-d",
+                number: "NUM033",
+                question: "質問33",
+                answer: "回答33",
+                memo: "特記事項なし"
+            },
+            {
+                id: "test34",
+                lv1: "lv1-b",
+                lv2: "lv2-d",
+                lv3: "lv3-b",
+                number: "NUM034",
+                question: "質問34",
+                answer: "回答34",
+                memo: "", source: "ABC"
+            },
+            {
+                id: "test35",
+                lv1: "lv1-a",
+                lv2: "lv2-b",
+                lv3: "lv3-c",
+                number: "NUM035",
+                question: "質問35",
+                answer: "回答35",
+                memo: "", source: "ABC"
+            },
+            {
+                id: "test36",
+                lv1: "lv1-c",
+                lv2: "lv2-e",
+                lv3: "lv3-a",
+                number: "NUM036",
+                question: "質問36",
+                answer: "回答36",
+                memo: "", source: "ABC"
+            },
+            {
+                id: "test37",
+                lv1: "lv1-b",
+                lv2: "lv2-d",
+                lv3: "lv3-c",
+                number: "NUM037",
+                question: "質問37",
+                answer: "回答37",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test38",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-b",
+                number: "NUM038",
+                question: "質問38",
+                answer: "回答38",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test39",
+                lv1: "lv1-b",
+                lv2: "lv2-c",
+                lv3: "lv3-b",
+                number: "NUM039",
+                question: "質問39",
+                answer: "回答39",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test40",
+                lv1: "lv1-c",
+                lv2: "lv2-f",
+                lv3: "lv3-d",
+                number: "NUM040",
+                question: "質問40",
+                answer: "回答40",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test41",
+                lv1: "lv1-a",
+                lv2: "lv2-a",
+                lv3: "lv3-a",
+                number: "NUM041",
+                question: "質問41",
+                answer: "回答41",
+                memo: "", source: "FAQ"
+            },
+            {
+                id: "test42",
+                lv1: "lv1-b",
+                lv2: "lv2-d",
+                lv3: "lv3-b",
+                number: "NUM042",
+                question: "質問42",
+                answer: "回答42",
+                memo: "", source: "CCC",
+            },
+        ];
+
+
+        const mountSplitters = (containerSelector) => {
+
+            const container = document.querySelector(containerSelector);
+            const splitters = container.querySelectorAll('.splitter');
+
+            splitters.forEach((splitter, i) => {
+                let isDragging = false;
+                let startX = 0;
+                let containerWidth = 0;
+                let prevPanel, nextPanel;
+                let prevBasis, nextBasis;
+
+                splitter.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    startX = e.clientX;
+                    containerWidth = container.getBoundingClientRect().width;
+
+                    prevPanel = splitter.previousElementSibling;
+                    nextPanel = splitter.nextElementSibling;
+
+                    prevBasis = parseFloat(getComputedStyle(prevPanel).flexBasis);
+                    nextBasis = parseFloat(getComputedStyle(nextPanel).flexBasis);
+
+                    document.body.style.cursor = 'ew-resize';
+                    document.body.style.userSelect = 'none';
+                });
+
+                const onMouseMove = (e) => {
+                    if (!isDragging) return;
+
+                    const deltaX = e.clientX - startX;
+                    const deltaPercent = (deltaX / containerWidth) * 100;
+
+                    let newPrev = prevBasis + deltaPercent;
+                    let newNext = nextBasis - deltaPercent;
+
+                    // 制限：10%〜90% に抑える（変に潰れないように）
+                    if (newPrev < 10 || newNext < 10) return;
+
+                    prevPanel.style.flexBasis = `${newPrev}%`;
+                    nextPanel.style.flexBasis = `${newNext}%`;
+                };
+
+                const onMouseUp = () => {
+                    isDragging = false;
+                    document.body.style.cursor = 'default';
+                    document.body.style.userSelect = 'auto';
+                };
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            })
+        }
+    </script>
 
 
     </script>
@@ -52,10 +521,8 @@
 
         .header {
             display: grid;
-            grid-template-columns: 0.5fr 0.5fr;
+            grid-template-columns: 0.5fr 0.25fr 0.25fr;
             gap: 4px;
-            padding: 16px;
-            padding-bottom: 0px;
         }
 
         .panes {
@@ -70,7 +537,7 @@
             flex-shrink: 0;
             flex-basis: 50%;
             min-width: 10%;
-            padding: 10px;
+            /* padding: 10px; */
             box-sizing: border-box;
             /* overflow: auto; */
         }
@@ -88,6 +555,8 @@
 
         .panel.second {
             flex-basis: 70%;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
         }
 
         .splitter {
@@ -95,7 +564,8 @@
             cursor: ew-resize;
             user-select: none;
             flex-shrink: 0;
-            background-color: #cfcfcf;
+            opacity: var(--v-border-opacity);
+            background-color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
         }
 
         .splitter:hover {
@@ -169,6 +639,42 @@
             background-color: rgba(var(--v-theme-info), 1);
         }
 
+        .summary {
+            display: flex;
+            align-items: center;
+        }
+
+        .summary::before {
+            content: "▶";
+        }
+
+        details[open]>.summary::before {
+            content: "▼";
+        }
+
+        .children {
+            margin-left: 32px;
+        }
+
+        .tree {
+            overflow: auto;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-row-2 {
+            grid-template-rows: auto 1fr;
+        }
+
+        .grid-row-3 {
+            grid-template-rows: auto auto 1fr;
+        }
+
+        .grid-row-4 {
+            grid-template-rows: auto auto auto 1fr;
+        }
     </style>
 </head>
 
@@ -185,12 +691,51 @@
 
                             <v-list density="compact" nav @click:select="handleClickPage">
 
+                                <v-list-item prepend-icon="mdi-book-open-blank-variant-outline" title="FAQ" value="faq"></v-list-item>
+                                <v-divider></v-divider>
+
+                                <v-dialog max-width="500">
+                                    <template v-slot:activator="{ props: activatorProps }">
+                                        <v-list-item prepend-icon="mdi-plus" title="新規ページの追加"
+                                            v-bind="activatorProps"></v-list-item>
+                                    </template>
+
+                                    <template v-slot:default="{ isActive }">
+
+                                        <v-card title="カスタムページの追加">
+
+                                            <v-card-text>
+
+                                                タイトル
+                                                <v-text-field placeholder="タイトルを入力してください"
+                                                    v-model="editCustomPageDetails.name"></v-text-field>
+
+                                                URL
+                                                <v-text-field placeholder="表示するURLを入力してください"
+                                                    v-model="editCustomPageDetails.url"></v-text-field>
+
+                                                <v-checkbox label="一度開いたページの維持"
+                                                    v-model="editCustomPageDetails.isPreserved"></v-checkbox>
+
+                                            </v-card-text>
+
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn :disabled="editCustomPageDetails.name.length == 0 || editCustomPageDetails.url.length == 0" text="追加" @click="handleAddCustomPage(); isActive.value = false"></v-btn>
+                                                <v-btn text="キャンセル" @click="handleCancelAddCustomPage(); isActive.value = false"></v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </template>
+                                </v-dialog>
+
+
                                 <template v-for="page in pageList">
-                                    <v-list-item prepend-icon="mdi-folder" :title="page.name" :value="page.id"></v-list-item>
+                                    <v-list-item prepend-icon="mdi-file-outline" :title="page.name"
+                                        :value="page.id"></v-list-item>
                                 </template>
 
-                                <!-- <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item> -->
-                                <!-- <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item> -->
+                                <!-- <v-list-item prepend-icon="mdi-accoun="mdi-star" title="Starred" nt-multiple" title="Shared with me" value="shared"></v-list-item> -->
+                                <!-- <v-list-item prepend-icovalue="starred"></v-list-item> -->
                             </v-list>
 
                         </v-navigation-drawer>
@@ -198,17 +743,26 @@
                         <v-main>
                             <v-sheet>
                                 <div class="app-main">
-
-                                    <div class="iframe-wrapper" v-if="currentPageId != 'faq'">
-                                        <iframe class="frame" :src="currentPage.url"></iframe>
-                                    </div>
+                                    <!-- {{loadedPageIdList}} -->
+                                    <template v-for="loadedPageId in loadedPageIdList">
+                                        
+                                        <div class="iframe-wrapper" v-show="currentPage && currentPage.id != 'faq' && loadedPageId == currentPage.id">                                
+                                            <iframe class="frame" :src="currentPage.url"></iframe>
+                                        </div>                                        
+                                    </template>
+                                    
+                                    
+                                    <!-- <div class="iframe-wrapper" v-show="currentPage && currentPage.url != undefined && currentPage.id != 'faq'">                                
+                                        <iframe class="frame" :src="currentPage?.url ?? ''" v-show="loadedPages.includes(currentPageId)"></iframe>
+                                    </div> -->
 
                                     <div class="faq-view-content" v-show="currentPageId == `faq`">
-                                        <div class="header">
+
+                                        <div class="header pa-2">
                                             <v-text-field v-model="keyword" label="検索キーワード" density="comfortable"
-                                                center-affix clearable variant="underlined"
-                                                @update:focused="updateFocused"></v-text-field>
-                                            <v-select density="comfortable" v-model="selectedSearchTargets"
+                                                hide-details center-affix clearable variant="outlined"></v-text-field>
+
+                                            <v-select density="comfortable" v-model="selectedSearchTargets" hide-details
                                                 :items="searchTargets" label="検索対象" multiple persistent-hint>
                                                 <template v-slot:selection="{ item, index }">
                                                     <v-chip v-if="selectedSearchTargets.length != searchTargets.length"
@@ -218,35 +772,84 @@
                                                         text="すべて"></v-chip>
                                                 </template>
                                             </v-select>
+
+
+                                            <v-select density="comfortable" v-model="targetSources" hide-details
+                                                :items="sources" label="ソース" multiple persistent-hint>
+                                                <template v-slot:selection="{ item, index }">
+                                                    <v-chip v-if="targetSources.length != sources.length"
+                                                        :text="item.title"></v-chip>
+                                                    <v-chip v-if="targetSources.length == sources.length && index == 0"
+                                                        text="すべて"></v-chip>
+                                                </template>
+                                            </v-select>
+
                                         </div>
 
                                         <div class="panes">
-                                            <div class="panel first split-head">
+                                            <div class="panel first grid grid-row-2">
 
-                                                <div>
-                                                    <v-btn variant="text" size="small" @click="allNodesSelect">選択</v-btn>
-                                                    <v-btn variant="text" size="small" @click="allNodesDeselect">解除</v-btn>
-                                                    <v-btn variant="text" size="small" @click="allNodesOpen">展開</v-btn>
-                                                    <v-btn variant="text" size="small" @click="allNodesClose">折りたたむ</v-btn>
+                                                <v-tabs v-model="selectedTabIndex" grow class="w-100">
+                                                    <v-tab value="0">カテゴリ</v-tab>
+                                                    <v-tab value="1">ドラフト</v-tab>
+                                                </v-tabs>
+
+                                                <v-tabs-window v-model="selectedTabIndex" class="h-100">
+
+                                                    <v-tabs-window-item value="0" class="h-100 grid grid-row-3"
+                                                        transition="none" reverse-transition="none">
+
+                                                        <div>
+                                                            <v-btn variant="text" size="small"
+                                                                @click="allNodesSelect">選択</v-btn>
+                                                            <v-btn variant="text" size="small"
+                                                                @click="allNodesDeselect">解除</v-btn>
+                                                            <v-btn variant="text" size="small"
+                                                                @click="allNodesOpen">展開</v-btn>
+                                                            <v-btn variant="text" size="small"
+                                                                @click="allNodesClose">折りたたむ</v-btn>
+                                                        </div>
+
+                                                        <v-divider></v-divider>
+
+                                                        <v-sheet color="surface" class="pa-2 overflow-auto h-100">
+                                                            <div class="tree">
+                                                                <tree :items="categoryTree"
+                                                                    :selected="selectedCategories"
+                                                                    :filtered="filterItems.categories"
+                                                                    :opened="openedNodes"
+                                                                    @checked-update="handleChangeChecked"></tree>
+                                                            </div>
+
+                                                        </v-sheet>
+
+                                                    </v-tabs-window-item>
+
+                                                    <v-tabs-window-item value="1" class="h-100" transition="none"
+                                                        reverse-transition="none">
+                                                        <v-textarea width="100%" class="h-100" height="100%"
+                                                            hide-details no-resize clearable></v-textarea>
+                                                    </v-tabs-window-item>
+
+                                                </v-tabs-window>
+
+
+
+                                            </div>
+
+                                            <div class="splitter"></div>
+
+                                            <div class="panel second">
+
+                                                <div class="pa-2">
+                                                    {{filterItems.faqItems.length}}件 見つかりました
                                                 </div>
 
                                                 <v-divider></v-divider>
 
-                                                <v-treeview height="100%" filterable :items="categoryTree"
-                                                    :selected="selectedCategories" item-value="item.id"
-                                                    item-title="item.text" item-children="children" density="compact"
-                                                    selectable select-strategy="independent" open-on-click v-model:opened="openedNodes"
-                                                    :search="categoryFilter" 
-                                                    :custom-filter="treeFilter"
-                                                    @update:selected="updateCategorySelected">
+                                                <v-virtual-scroll class="pa-2" :items="filterItems.faqItems"
+                                                    height="100%">
 
-                                                </v-treeview>
-
-                                            </div>
-                                            <div class="splitter"></div>
-                                            <div class="panel second">
-
-                                                <v-virtual-scroll :items="filterItems.faqItems" height="100%">
                                                     <template v-slot:default="{ item, index }">
                                                         <div class="qa-item">
                                                             <div>
@@ -254,21 +857,33 @@
 
                                                                     <div>{{item.number}}</div>
                                                                     <div class="category">
-                                                                        <span>{{ categoryNames[item.lv1] }} - {{
+
+                                                                        <v-btn variant="text" size="small"
+                                                                            @click="handleFilterCategory([item.lv1])">{{categoryNames[item.lv1]}}</v-btn>
+                                                                        <v-btn variant="text" size="small"
+                                                                            @click="handleFilterCategory([item.lv1, item.lv2])">{{categoryNames[item.lv2]}}</v-btn>
+                                                                        <v-btn variant="text" size="small"
+                                                                            @click="handleFilterCategory([item.lv1, item.lv2, item.lv3])">{{categoryNames[item.lv3]}}</v-btn>
+                                                                        <!-- <span>{{ categoryNames[item.lv1] }} - {{
                                                                             categoryNames[item.lv2] }} - {{
-                                                                            categoryNames[item.lv3] }}</span>
+                                                                            categoryNames[item.lv3] }}</span> -->
                                                                     </div>
                                                                 </div>
 
                                                                 <div>
                                                                     <div class="question-text">
-                                                                        <template v-if="filterItems.highlightDataItems[index]?.question">
-                                                                            <template v-for="el in filterItems.highlightDataItems[index]?.question">
-                                                                                <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
-                                                                                <span v-if="!el.isHighlightTarget">{{el.text}}</span>
+                                                                        <template
+                                                                            v-if="filterItems.highlightDataItems[index]?.question">
+                                                                            <template
+                                                                                v-for="el in filterItems.highlightDataItems[index]?.question">
+                                                                                <span v-if="el.isHighlightTarget"
+                                                                                    class="content-highlight">{{el.text}}</span>
+                                                                                <span
+                                                                                    v-if="!el.isHighlightTarget">{{el.text}}</span>
                                                                             </template>
                                                                         </template>
-                                                                        <template v-if="!(filterItems.highlightDataItems[index]?.question)">{{item.question}}</template>
+                                                                        <template
+                                                                            v-if="!(filterItems.highlightDataItems[index]?.question)">{{item.question}}</template>
                                                                     </div>
 
                                                                     <div v-if="item.answer && item.answer.length > 0"
@@ -276,14 +891,19 @@
                                                                         contenteditable v-on:dragover="onInput"
                                                                         v-on:drop="onInput" v-on:keypress="onInput"
                                                                         v-on:paste="onInput" v-on:cut="onInput">
-                                                                    
-                                                                        <template v-if="filterItems.highlightDataItems[index]?.answer">
-                                                                            <template v-for="el in filterItems.highlightDataItems[index]?.answer">
-                                                                                <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
-                                                                                <span v-if="!el.isHighlightTarget">{{el.text}}</span>
+
+                                                                        <template
+                                                                            v-if="filterItems.highlightDataItems[index]?.answer">
+                                                                            <template
+                                                                                v-for="el in filterItems.highlightDataItems[index]?.answer">
+                                                                                <span v-if="el.isHighlightTarget"
+                                                                                    class="content-highlight">{{el.text}}</span>
+                                                                                <span
+                                                                                    v-if="!el.isHighlightTarget">{{el.text}}</span>
                                                                             </template>
                                                                         </template>
-                                                                        <template v-if="!(filterItems.highlightDataItems[index]?.answer)">{{item.answer}}</template>
+                                                                        <template
+                                                                            v-if="!(filterItems.highlightDataItems[index]?.answer)">{{item.answer}}</template>
 
                                                                     </div>
 
@@ -295,27 +915,34 @@
                                                                 <div class="qa-item-memo-title">メモ欄</div>
                                                                 <div class="qa-item-memo-content">
 
-                                                                    <template v-if="filterItems.highlightDataItems[index]?.memo">
+                                                                    <template
+                                                                        v-if="filterItems.highlightDataItems[index]?.memo">
 
-                                                                        <template v-for="el in filterItems.highlightDataItems[index]?.memo">
-                                                                            
+                                                                        <template
+                                                                            v-for="el in filterItems.highlightDataItems[index]?.memo">
+
                                                                             <template v-if="el.link">
                                                                                 <a :href="el.url" target=”_blank”>
-                                                                                    <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
-                                                                                    <span v-if="!el.isHighlightTarget">{{el.text}}</span>    
-                                                                                </a>                                                                                
+                                                                                    <span v-if="el.isHighlightTarget"
+                                                                                        class="content-highlight">{{el.text}}</span>
+                                                                                    <span
+                                                                                        v-if="!el.isHighlightTarget">{{el.text}}</span>
+                                                                                </a>
                                                                             </template>
 
                                                                             <template v-if="!el.link">
-                                                                                <span v-if="el.isHighlightTarget" class="content-highlight">{{el.text}}</span>
-                                                                                <span v-if="!el.isHighlightTarget">{{el.text}}</span>    
+                                                                                <span v-if="el.isHighlightTarget"
+                                                                                    class="content-highlight">{{el.text}}</span>
+                                                                                <span
+                                                                                    v-if="!el.isHighlightTarget">{{el.text}}</span>
                                                                             </template>
 
                                                                         </template>
                                                                     </template>
 
-                                                                    <template v-if="!(filterItems.highlightDataItems[index]?.memo)">{{item.memo}}</template>
-                                                                    
+                                                                    <template
+                                                                        v-if="!(filterItems.highlightDataItems[index]?.memo)">{{item.memo}}</template>
+
                                                                 </div>
                                                             </div>
 
@@ -343,11 +970,12 @@
                         </v-main>
 
 
+
                     </v-layout>
                 </v-card>
 
-
             </v-theme-provider>
+
         </v-app>
     </div>
 
@@ -463,41 +1091,11 @@
             return result;
         }
 
-        const getHighlightTextStructureRegex = (keywords, source) => {
-
-            if (!source) return undefined;
-
-            const a = split(source, keywords[0]).map(text => ({ isHighlightTarget: keywords[0] == text, text }));
-
-            // if (keywords.length == 1) return a;
-
-            for (let i = 1; i < keywords.length; i++) {
-
-                const keyword = keywords[i];
-
-                for (let k = 0; k < a.length; k++) {
-
-                    const current = a[k].text;
-
-                    // console.log(current, keyword, source);
-
-                    if (current.indexOf(keyword) > -1) {
-                        const aa = split(current, keyword).map(text => ({ isHighlightTarget: keyword == text, text }));
-                        a.splice(k, 1);
-                        a.splice(k, 0, ...aa);
-                        k += aa.length;
-                    }
-                }
-            }
-
-            return a;
-        }
-
         const getHighlightTextStructure2 = (source) => {
 
             const urlRegexes = [...source.matchAll(/https?:\/\/[^\s"']+/g)];
             const a = [];
-            
+
             let last = 0;
             let obj = {};
 
@@ -508,23 +1106,21 @@
 
                 if (index > last) {
                     obj = { text: source.substring(last, index), index: last, link: false }
-                    a.push({...obj});
+                    a.push({ ...obj });
                 }
 
                 last = index + value.length;
 
                 obj = { text: source.substring(index, last), index, link: true, url: value, startLink: true, endLink: true };
-                a.push({...obj});
+                a.push({ ...obj });
 
                 console.log(value);
             }
 
             if (last < source.length) {
                 obj = { text: source.substring(last, source.length), index: last, link: false };
-                a.push({...obj});
+                a.push({ ...obj });
             }
-
-            console.log(a);
 
             return a;
         }
@@ -556,8 +1152,8 @@
                     // console.log(current, keyword, source);
 
                     if (current.indexOf(keyword) > -1) {
-                        const aa = split2(current, keyword).map(({ index, text }) => 
-                        ({ index, isHighlightTarget: keyword == text, text, link: a[k].link, url: a[k].url ?? undefined }));
+                        const aa = split2(current, keyword).map(({ index, text }) =>
+                            ({ index, isHighlightTarget: keyword == text, text, link: a[k].link, url: a[k].url ?? undefined }));
                         a.splice(k, 1);
                         a.splice(k, 0, ...aa);
                         k += aa.length;
@@ -570,42 +1166,8 @@
                 }
             }
 
-            console.log(a);
-
             return a;
         }
-
-        // const escapeRegExp = (string) => {
-        //     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // };
-
-        // const escapeHTML = (string) => {
-        //     return string
-        //         .replace(/&/g, "&amp;")
-        //         .replace(/</g, "&lt;")
-        //         .replace(/>/g, "&gt;")
-        //         .replace(/"/g, "&quot;")
-        //         .replace(/'/g, "&#039;");
-        // };
-
-        // const getHighlightTextStructure = (keywords, source) => {
-
-        //     const escapedSource = escapeHTML(source ?? "");
-
-        //     let html = `<div>${escapedSource}</div>`;
-
-        //     for (const keyword of keywords) {
-                
-        //         const safeKeyword = escapeRegExp(keyword);
-
-        //         html = html.replace(
-        //             new RegExp(`(${safeKeyword})`, "gi"),
-        //             "<span class=\"content-highlight\">$1</span>"
-        //         );
-        //     }
-
-        //     return html;
-        // };
 
         const highlightKeywords = (keywords, item) => {
 
@@ -650,13 +1212,13 @@
                         faqItems.push(item);
 
                         // if (keyword) {
-                            const h = highlightKeywords(keywords, item);
-                            highlightDataItems.push(h);
+                        const h = highlightKeywords(keywords, item);
+                        highlightDataItems.push(h);
                         // }
-
-                        console.log(keyword);
                     }
 
+                    if (!filterCategories.includes(item.lv1)) filterCategories.push(item.lv1);
+                    if (!filterCategories.includes(item.lv2)) filterCategories.push(item.lv2);
                     if (!filterCategories.includes(item.lv3)) filterCategories.push(item.lv3);
                 }
             }
@@ -664,6 +1226,27 @@
             return { faqItems, highlightDataItems, categories: filterCategories };
         }
 
+        const filiteredCategories = (categories, targetId) => {
+            const children = getChildren(categories, targetId);
+            const parents = getParents(categories, targetId);
+            const targetIds = [...children, targetId, ...parents];
+
+            return { children, parents };
+        }
+
+
+        const getParents = (c, id) => {
+
+            const parentItem = c.find(item => item.id == id);
+            const results = [];
+
+            if (parentItem) {
+                results.push(parentItem.parentId);
+                results.push(...getParents(c, parentItem.parentId));
+            }
+
+            return results;
+        }
 
         const getChildren = (c, id) => {
             const items = c.filter(item => item.parentId == id);
@@ -682,13 +1265,59 @@
         }
 
         const { createApp, ref, shallowRef, computed } = Vue
-        const { createVuetify } = Vuetify
+        const { createVuetify } = Vuetify;
+        const { md3 } = Vuetify.blueprints;
 
         const vuetify = createVuetify({
+            blueprint: md3,
             theme: {
                 defaultTheme: 'system',
             },
         });
+
+
+        const treeComponent = {
+            props: ["selected", "items", "filtered", "opened"],
+            methods: {
+                handleUpdateChecked: function (targetId, newValue) {
+                    this.$emit('checkedUpdate', targetId, newValue);
+                }
+            },
+            template: `
+                <div>
+                    <template v-for="item in items">
+                        <template v-if="item.children && item.children.length > 0">
+                            <details v-if="(!filtered || filtered.includes(item.item.id))" :open="(!opened || opened.includes(item.item.id))">
+                                <summary class="summary">
+                                    <span><v-checkbox-btn 
+                                        color="primary"
+                                        class="p-2" 
+                                        inline 
+                                        hide-details 
+                                        persistent-hint 
+                                        :label="item.item.text"
+                                        :model-value="selected?.includes(item.item.id)"
+                                        @update:modelValue="$emit('checkedUpdate', item.item.id, !selected?.includes(item.item.id))"
+                                        ></v-checkbox-btn></span>
+                                </summary>
+                                <tree class="children" :items="item.children" :filtered="filtered" :selected="selected" :opened="opened" @checked-update="handleUpdateChecked"></tree>
+                            </details>
+                        </template>
+
+                        <template v-else>
+                            <div v-if="(!filtered || filtered.includes(item.item.id))"><v-checkbox-btn 
+                                class="p-2" 
+                                color="primary"
+                                inline hide-details persistent-hint 
+                                :label="item.item.text"
+                                :model-value="selected?.includes(item.item.id)"
+                                @update:modelValue="$emit('checkedUpdate', item.item.id, !selected?.includes(item.item.id))"
+                                ></v-checkbox-btn></div>
+                        </template>
+                    </template>
+                </div>
+            `
+        };
 
         createApp({
 
@@ -697,18 +1326,30 @@
                 const faqObject = __faqObject;
                 const { faqItems, categories, categoryNames } = generateFaqData(faqObject);
 
-                const pageList = [
-                    { id: "faq", name: "FAQ", url: "faq" },
-                    { id: crypto.randomUUID(), name: "test", url: "https://www.google.co.jp" },
-                ];
+                const pageList = ref([
+                    // { id: "faq", name: "FAQ", url: "faq" },
+                    { id: crypto.randomUUID(), name: "test", url: "https://docs.google.com/spreadsheets/d/1bCEnITJDLR5DzIQgKg9Ksb3I-tmmeTz82pWLPgByeL4/edit?gid=551011289#gid=551011289" },
+                    { id: crypto.randomUUID(), name: "testa", url: "https://gemini.google.com/gem/ac9844eee635" }
+                ]);
 
-                const currentPageId = ref(pageList[0].id);
-                const currentPage = computed(() => pageList.find(item => item.id == currentPageId.value));
+                const currentPageId = ref("faq");
+                const currentPage = computed(() => pageList.value.find(item => item.id == currentPageId.value));
+
+                const loadedPageIdList = ref([]);
+
+                const editCustomPageDetails = ref({ name: "", url: "", isPreserved: true })
 
                 const keyword = ref("");
                 const categoryFilter = ref("");
 
+                const openDrawer = ref(false);
+                const selectedTabIndex = ref(0);
+
                 const searchTargets = ["区分1", "区分2", "区分3", "通し番号", "Question", "Answer", "メモ欄"];
+
+                const sources = Array.from(new Set(faqItems.map(m => m.source).filter(u => u != undefined)));
+                const targetSources = shallowRef([...sources]);
+
                 const selectedSearchTargets = shallowRef([...searchTargets]);
                 const selectedCategories = shallowRef(categories.map(item => item.id));
 
@@ -735,58 +1376,57 @@
                 }
 
                 const allNodesDeselect = () => {
-                    selectedCategories.value = [];                    
+                    selectedCategories.value = [];
                 }
 
-                const updateFocused = (state) => {
-                    if (!state) {
-                        categoryFilter.value = keyword.value;
-                        filterCategories.value = [...filterItems.value.categories];
+                const handleChangeChecked = (targetId, value) => {
+
+                    const { children, parents } = filiteredCategories(categories, targetId);
+
+                    if (!value) {
+                        selectedCategories.value = selectedCategories.value.filter(id => targetId != id && !children.includes(id));
+                    } else {
+                        selectedCategories.value = [...children, targetId, ...parents, ...selectedCategories.value];
                     }
                 }
 
-                const updateCategorySelected = (value, item) => {
+                const handleFilterCategory = (value) => {
 
-                    let selected = [...value];
+                    const id = value[value.length - 1];
+                    const { children, parents } = filiteredCategories(categories, id);
 
-                    const a = selectedCategories.value.length < value.length ? selectedCategories.value : value;
-                    const b = selectedCategories.value.length < value.length ? value : selectedCategories.value;
-
-                    let state;
-
-                    for (const item of b) {
-                        if (!a.includes(item)) {
-                            const isChecked = value.includes(item);
-                            state = { id: item, isChecked };
-                            break;
-                        }
-                    }
-
-                    if (state) {
-
-                        const children = getChildren(categories, state.id);
-
-                        if (state.isChecked) {
-                            selected.push(...children);
-                        } else {
-                            selected = selected.filter(id => !children.includes(id));
-                        }
-                    }
-
-                    selectedCategories.value = selected;
+                    selectedTabIndex.value = "0";
+                    selectedCategories.value = [...value, ...children, id];
                 }
 
                 const handleClickPage = (e) => {
 
-                    const page = pageList.find(item => item.id == e.id);
+                    const page = pageList.value.find(item => item.id == e.id);
 
                     if (page) {
                         currentPageId.value = page.id;
-                        console.log(currentPageId);
 
-                        
+                        if (!loadedPageIdList.value.includes(page.id) && page.isPreserved) {
+                            loadedPageIdList.value.push(page.id);
+                        }
                     }
-                    console.log(e);
+                    else {
+                        currentPageId.value = e.id;
+                    }
+                }
+
+                const resetEditCustomPage = () => {
+                    editCustomPageDetails.value = { name: "", url: "", isPreserved: false };
+                }
+
+                const handleAddCustomPage = () => {
+
+                    pageList.value.push({ ...editCustomPageDetails.value, id: crypto.randomUUID() });
+                    resetEditCustomPage();
+                }
+
+                const handleCancelAddCustomPage = () => {
+                    resetEditCustomPage();
                 }
 
                 return {
@@ -794,19 +1434,22 @@
                     faqItems,
                     filterItems,
 
+                    sources,
+                    targetSources,
+
                     openedNodes,
                     allNodesOpen,
                     allNodesClose,
                     allNodesSelect,
                     allNodesDeselect,
 
+                    handleFilterCategory,
+
                     categoryTree,
                     selectedCategories,
                     searchTargets,
                     selectedSearchTargets,
-
-                    updateFocused,
-                    updateCategorySelected,
+                    handleChangeChecked,
 
                     categoryFilter,
                     treeFilter,
@@ -817,16 +1460,22 @@
 
                     currentPage,
                     currentPageId,
-                    pageList, 
+                    pageList,
+                    loadedPageIdList,
                     handleClickPage,
+
+                    openDrawer,
+                    selectedTabIndex,
+
+                    editCustomPageDetails,
+                    handleAddCustomPage,
+                    handleCancelAddCustomPage,
                 }
             },
 
-        }).use(vuetify).mount('#app');
+        }).component("tree", treeComponent).use(vuetify).mount('#app');
 
-        
         mountSplitters(".panes");
-
 
     </script>
 
