@@ -687,6 +687,14 @@
             grid-template-rows: auto auto auto 1fr;
         }
 
+        .flex {
+            display: flex;
+        }
+
+        .margin-left-auto {
+            margin-left: auto
+        }
+
     </style>
 </head>
 
@@ -706,38 +714,35 @@
                                 <v-list-item prepend-icon="mdi-book-open-blank-variant-outline" title="FAQ" value="faq"></v-list-item>
                                 <v-divider></v-divider>
 
-                                <v-dialog max-width="500">
-                                    <template v-slot:activator="{ props: activatorProps }">
-                                        <v-list-item prepend-icon="mdi-plus" title="新規ページの追加"
-                                            v-bind="activatorProps"></v-list-item>
-                                    </template>
+                                <v-list-item prepend-icon="mdi-plus" title="新規ページの追加" @click="isEdit = true"></v-list-item>
 
-                                    <template v-slot:default="{ isActive }">
+                                <v-dialog max-width="500" v-model="isEdit">
+                                    <v-card title="カスタムページの追加">
+                                        <v-card-text>
 
-                                        <v-card title="カスタムページの追加">
+                                            タイトル
+                                            <v-text-field placeholder="タイトルを入力してください"
+                                                v-model="editCustomPageDetails.name"></v-text-field>
 
-                                            <v-card-text>
+                                            URL
+                                            <v-text-field placeholder="表示するURLを入力してください"
+                                                v-model="editCustomPageDetails.url"></v-text-field>
 
-                                                タイトル
-                                                <v-text-field placeholder="タイトルを入力してください"
-                                                    v-model="editCustomPageDetails.name"></v-text-field>
+                                            <v-checkbox label="一度開いたページの維持"
+                                                v-model="editCustomPageDetails.isPreserved"></v-checkbox>
 
-                                                URL
-                                                <v-text-field placeholder="表示するURLを入力してください"
-                                                    v-model="editCustomPageDetails.url"></v-text-field>
+                                        </v-card-text>
 
-                                                <v-checkbox label="一度開いたページの維持"
-                                                    v-model="editCustomPageDetails.isPreserved"></v-checkbox>
+                                        <template v-slot:actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn :disabled="editCustomPageDetails.name.length == 0 || editCustomPageDetails.url.length == 0" text="追加" @click="handleAddCustomPage(); isEdit = false"></v-btn>
+                                            <v-btn text="キャンセル" @click="handleCancelAddCustomPage(); isEdit = false;"></v-btn>
+                                        </template>
 
-                                            </v-card-text>
+                                        <!-- <v-card-actions>
 
-                                            <v-card-actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn :disabled="editCustomPageDetails.name.length == 0 || editCustomPageDetails.url.length == 0" text="追加" @click="handleAddCustomPage(); isActive.value = false"></v-btn>
-                                                <v-btn text="キャンセル" @click="handleCancelAddCustomPage(); isActive.value = false"></v-btn>
-                                            </v-card-actions>
-                                        </v-card>
-                                    </template>
+                                        </v-card-actions> -->
+                                    </v-card>
                                 </v-dialog>
 
 
@@ -761,14 +766,32 @@
                                     <!-- test -->
                                     <template v-for="extraPage in preExtraPageList">
                                         <div class="iframe-wrapper" v-show="currentPage.id == extraPage.id && extraPage.isPreserved">
-                                            <iframe class="frame" :src="extraPage.url"></iframe>
+                                            <div class="grid grid-row-2 h-100">
+                                                <div class="flex flex-row margin-left-auto pa-2">
+                                                    <v-btn variant="text" size="small" rounded="none" @click="handleEditCustomPage(extraPage)">ページ設定の編集</v-btn>
+                                                    <v-btn variant="text" size="small" rounded="none">▲</v-btn>
+                                                    <v-btn variant="text" size="small" rounded="none">▼</v-btn>
+                                                    <v-btn variant="text" size="small" rounded="none">削除</v-btn>
+                                                </div>
+                                                <iframe class="frame" :src="extraPage.url"></iframe>
+                                            </div>
                                         </div>
                                     </template>
 
                                     <template v-for="extraPage in tempExtraPageList">
+
                                         <div class="iframe-wrapper" v-if="currentPage.id == extraPage.id && !extraPage.isPreserved">
-                                            <iframe class="frame" :src="extraPage.url"></iframe>
-                                        </div> 
+                                            <div class="grid grid-row-2 h-100">
+                                                <div class="flex flex-row margin-left-auto pa-2">
+                                                    <v-btn variant="text" size="small" rounded="none" @click="handleEditCustomPage(extraPage)">ページ設定の編集</v-btn>
+                                                    <v-btn variant="text" size="small" rounded="none">▲</v-btn>
+                                                    <v-btn variant="text" size="small" rounded="none">▼</v-btn>
+                                                    <v-btn variant="text" size="small" rounded="none">削除</v-btn>
+                                                </div>
+                                                <iframe class="frame" :src="extraPage.url"></iframe>
+                                            </div>
+                                        </div>
+
                                     </template>
                                     <!-- test -->                                  
                                     
@@ -1069,13 +1092,15 @@
 
 
                 //-------------
+                const isEdit = ref(false);
+
+                const saveStorageKey = "fa2938f2-6d3d-4af4-9188-1683ef74b747";
+
                 const defaultPageList = ref([
                     { id: "faq", name: "FAQ", url: "faq", isOpened: false },
                 ]);
 
-                const extraPageIdList = ref([
-                    
-                ]);
+                const extraPageIdList = ref(JSON.parse(window.localStorage.getItem(saveStorageKey)) ?? []);
 
                 const preExtraPageList = computed(() => extraPageIdList.value.filter(page => page.isOpened && page.isPreserved));
                 const tempExtraPageList = computed(() => extraPageIdList.value.filter(page => !page.isPreserved));
@@ -1181,11 +1206,27 @@
                     editCustomPageDetails.value = { name: "", url: "", isPreserved: true };
                 }
 
-                const handleAddCustomPage = () => {
+                const saveCustomPage = () => {
+                    window.localStorage.setItem(saveStorageKey, JSON.stringify(extraPageIdList.value.filter(item => ({...item, isOpened: false}))));
+                }
 
+                const handleAddCustomPage = () => {
                     extraPageIdList.value.push({ ...editCustomPageDetails.value, id: crypto.randomUUID(), isOpened: false});
+                    saveCustomPage();
                     resetEditCustomPage();
                 }
+
+
+                const handleEditCustomPage = (e) => {
+
+                    const p = extraPageIdList.value.find(page => e.id == page.id);
+
+                    if (p) {
+                        editCustomPageDetails.value = {...p};
+                        isEdit.value = true;
+                    }
+                }
+
                 //-------------
 
 
@@ -1223,6 +1264,7 @@
                     onInput,
 
                     //-------------
+                    isEdit,
                     currentPage,
                     pageList,
                     defaultPageList,
@@ -1231,6 +1273,7 @@
                     tempExtraPageList,
                     loadedPageStates,
                     handleClickPage,
+                    handleEditCustomPage,
                     //-------------
 
 
