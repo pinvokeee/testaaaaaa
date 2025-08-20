@@ -741,10 +741,12 @@
                                 </v-dialog>
 
 
-                                <template v-for="page in pageList">
+                                <!-- test -->
+                                <template v-for="page in extraPageIdList">
                                     <v-list-item prepend-icon="mdi-file-outline" :title="page.name"
                                         :value="page.id"></v-list-item>
                                 </template>
+                                <!-- test -->
 
                                 <!-- <v-list-item prepend-icon="mdi-accoun="mdi-star" title="Starred" nt-multiple" title="Shared with me" value="shared"></v-list-item> -->
                                 <!-- <v-list-item prepend-icovalue="starred"></v-list-item> -->
@@ -755,20 +757,22 @@
                         <v-main>
                             <v-sheet>
                                 <div class="app-main">
-                                    <!-- {{loadedPageIdList}} -->
-                                    <template v-for="loadedPageId in loadedPageIdList">
-                                        
-                                        <div class="iframe-wrapper" v-show="currentPage && currentPage.id != 'faq' && loadedPageId == currentPage.id">                                
-                                            <iframe class="frame" :src="currentPage.url"></iframe>
-                                        </div>                                        
-                                    </template>
-                                    
-                                    
-                                    <!-- <div class="iframe-wrapper" v-show="currentPage && currentPage.url != undefined && currentPage.id != 'faq'">                                
-                                        <iframe class="frame" :src="currentPage?.url ?? ''" v-show="loadedPages.includes(currentPageId)"></iframe>
-                                    </div> -->
 
-                                    <div class="faq-view-content" v-show="currentPageId == `faq`">
+                                    <!-- test -->
+                                    <template v-for="extraPage in preExtraPageList">
+                                        <div class="iframe-wrapper" v-show="currentPage.id == extraPage.id && extraPage.isPreserved">
+                                            <iframe class="frame" :src="extraPage.url"></iframe>
+                                        </div>
+                                    </template>
+
+                                    <template v-for="extraPage in tempExtraPageList">
+                                        <div class="iframe-wrapper" v-if="currentPage.id == extraPage.id && !extraPage.isPreserved">
+                                            <iframe class="frame" :src="extraPage.url"></iframe>
+                                        </div> 
+                                    </template>
+                                    <!-- test -->                                  
+                                    
+                                    <div class="faq-view-content" v-show="currentPage.id == `faq`">
 
                                         <div class="header pa-2">
                                             <v-text-field v-model="keyword" label="検索キーワード" density="comfortable"
@@ -1063,16 +1067,26 @@
                 const faq = new Faq(faqObject);
                 const { faqItems, categories, categoryNames, categoryTree } = faq;
 
-                const pageList = ref([
-                    // { id: "faq", name: "FAQ", url: "faq" },
-                    // { id: crypto.randomUUID(), name: "test", url: "https://docs.google.com/spreadsheets/d/1bCEnITJDLR5DzIQgKg9Ksb3I-tmmeTz82pWLPgByeL4/edit?gid=551011289#gid=551011289" },
-                    // { id: crypto.randomUUID(), name: "testa", url: "https://gemini.google.com/gem/ac9844eee635" }
+
+                //-------------
+                const defaultPageList = ref([
+                    { id: "faq", name: "FAQ", url: "faq", isOpened: false },
                 ]);
+
+                const extraPageIdList = ref([
+                    
+                ]);
+
+                const preExtraPageList = computed(() => extraPageIdList.value.filter(page => page.isOpened && page.isPreserved));
+                const tempExtraPageList = computed(() => extraPageIdList.value.filter(page => !page.isPreserved));
+
+                const loadedPageStates = ref([]);
+    
+                const pageList = computed(() => [...defaultPageList.value, ...extraPageIdList.value]);
 
                 const currentPageId = ref("faq");
                 const currentPage = computed(() => pageList.value.find(item => item.id == currentPageId.value));
-
-                const loadedPageIdList = ref([]);
+                //-------------
 
                 const editCustomPageDetails = ref({ name: "", url: "", isPreserved: true })
 
@@ -1137,16 +1151,26 @@
                     selectedCategories.value = [...value, ...children, id];
                 }
 
+                //-------------
                 const handleClickPage = (e) => {
 
                     const page = pageList.value.find(item => item.id == e.id);
 
                     if (page) {
-                        currentPageId.value = page.id;
 
-                        if (!loadedPageIdList.value.includes(page.id) && page.isPreserved) {
-                            loadedPageIdList.value.push(page.id);
+                        currentPageId.value = page.id;
+                        
+                        if (page.isPreserved) {
+                            page.isOpened = true;
                         }
+
+                        if (!defaultPageList.value.find(e => e.id == page.id)) {
+                            if (!loadedPageStates.value.find(p => p.id == page.id)) {
+                                loadedPageStates.value.push({ id: page.id, isPreserved: page.isPreserved, isOpened: false });
+                            }
+                        }
+
+                        console.log(loadedPageStates.value);
                     }
                     else {
                         currentPageId.value = e.id;
@@ -1154,14 +1178,16 @@
                 }
 
                 const resetEditCustomPage = () => {
-                    editCustomPageDetails.value = { name: "", url: "", isPreserved: false };
+                    editCustomPageDetails.value = { name: "", url: "", isPreserved: true };
                 }
 
                 const handleAddCustomPage = () => {
 
-                    pageList.value.push({ ...editCustomPageDetails.value, id: crypto.randomUUID() });
+                    extraPageIdList.value.push({ ...editCustomPageDetails.value, id: crypto.randomUUID(), isOpened: false});
                     resetEditCustomPage();
                 }
+                //-------------
+
 
                 const handleCancelAddCustomPage = () => {
                     resetEditCustomPage();
@@ -1196,11 +1222,17 @@
 
                     onInput,
 
+                    //-------------
                     currentPage,
-                    currentPageId,
                     pageList,
-                    loadedPageIdList,
+                    defaultPageList,
+                    extraPageIdList,
+                    preExtraPageList,
+                    tempExtraPageList,
+                    loadedPageStates,
                     handleClickPage,
+                    //-------------
+
 
                     openDrawer,
                     selectedTabIndex,
